@@ -70,52 +70,54 @@ npm run test:watch
 
 ## 📂 Структура проекту (Feature-Sliced Design Lite)
 
-```
+Проект організовано за принципами **Feature-Sliced Design (Lite)**, що забезпечує чіткий поділ відповідальності та полегшує масштабування.
+
+```text
 src/
-├── app/                    # Ініціалізація (провайдери, маршрутизатор, layouts)
-│   ├── layouts/            # AppLayout (з навбаром) та PublicLayout (для /login)
-│   ├── providers/          # UIProvider (Context API для Toast-повідомлень)
-│   └── router.tsx          # BrowserRouter + Protected Routes
+├── app/                    # Глобальні налаштування, провайдери, маршрутизація
+│   ├── layouts/            # Компоненти-обгортки для сторінок (з навбаром, без нього)
+│   ├── providers/          # Глобальні провайдери (UI-повідомлення, теми)
+│   └── router.tsx          # Налаштування React Router, захищені маршрути
 │
-├── pages/                  # Сторінки-композитори
-│   ├── login/              # Сторінка авторизації (/login)
-│   ├── business-trips/     # Список заявок та форма створення (/business-trips, /business-trips/new)
-│   ├── trip/               # Детальна картка заявки (/business-trips/:id)
-│   └── not-found/          # Сторінка 404
+├── pages/                  # Сторінки, що відповідають конкретним URL
+│   ├── login/              # Сторінка входу в систему
+│   ├── business-trips/     # Сторінка зі списком заявок та формою створення
+│   ├── trip/               # Сторінка з детальною інформацією про заявку
+│   └── not-found/          # Сторінка 404 Not Found
 │
-├── widgets/                # Великі автономні блоки
-│   └── ToastContainer.tsx  # Глобальний рендер Toast-повідомлень
+├── widgets/                # Великі, самодостатні блоки UI
+│   └── ToastContainer.tsx  # Контейнер для відображення спливаючих повідомлень
 │
-├── features/               # Бізнес-дії користувача
-│   ├── auth-by-email/      # Форма входу (RHF + Zod)
-│   ├── auth-me/            # Запит профілю GET /auth/me
-│   ├── create-trip/        # Форма та хук useCreateTrip (POST + invalidateQueries)
-│   ├── approve-trip/       # Кнопка зміни статусу (PATCH + invalidateQueries)
-│   └── add-manager-comment/# Форма коментаря (POST + invalidateQueries)
+├── features/               # Функціонал, що несе бізнес-цінність (дії користувача)
+│   ├── auth-by-email/      # Логіка та UI для форми авторизації
+│   ├── auth-me/            # Логіка запиту даних поточного користувача
+│   ├── create-trip/        # Форма та логіка створення нової заявки
+│   ├── approve-trip/       # Кнопки та логіка для зміни статусу заявки
+│   └── add-manager-comment/# Форма та логіка додавання коментаря
 │
-├── entities/               # Бізнес-сутності
-│   ├── trip/
-│   │   ├── model/types.ts  # TypeScript-типи (BusinessTrip, Comment, StatusHistoryEntry…)
-│   │   └── ui/             # TripCard, TripDetails
-│   └── user/
-│       └── model/store.tsx # AuthProvider (Context API, localStorage)
+├── entities/               # Бізнес-сутності та їх компоненти
+│   ├── trip/               # Все, що стосується сутності "Заявка"
+│   │   ├── model/          # Типи, API-запити, хуки для роботи з заявками
+│   │   └── ui/             # Компоненти для відображення заявок (картка, деталі)
+│   └── user/               # Все, що стосується сутності "Користувач"
+│       └── model/          # Сховище стану авторизації (Zustand)
 │
-├── shared/                 # Перевикористовувані ресурси
-│   └── api/
-│       ├── axiosInstance.ts # Axios instance + request/response interceptors (401 → logout)
-│       ├── tripApi.ts       # API-функції для заявок
-│       ├── statusApi.ts     # API-функції для довідників
-│       └── mock/
-│           ├── db.ts        # In-memory база даних (seed-дані за варіантом 2)
-│           ├── handlers.ts  # MSW handlers для всіх ендпоінтів
-│           ├── browser.ts   # MSW setupWorker (для браузера)
-│           └── server.ts    # MSW setupServer (для тестів)
+├── shared/                 # Перевикористовуваний код, не пов'язаний з бізнес-логікою
+│   ├── api/                # Налаштування API-клієнта та мок-сервера
+│   │   ├── axiosInstance.ts# Екземпляр Axios з інтерсепторами (токен, обробка 401)
+│   │   ├── tripApi.ts      # Функції для запитів, пов'язаних із заявками
+│   │   ├── statusApi.ts    # Функції для запитів довідників (статуси, цілі)
+│   │   └── mock/           # Імітація бекенду за допомогою MSW
+│   │       ├── db.ts       # "База даних" в пам'яті з початковими даними
+│   │       ├── handlers.ts # Обробники запитів для всіх ендпоінтів
+│   │       ├── browser.ts  # Ініціалізація MSW для браузера
+│   │       └── server.ts   # Ініціалізація MSW для тестів
+│   ├── ui/                 # Базові UI-компоненти (кнопки, іконки, спінери)
+│   └── lib/                # Допоміжні функції та хуки
 │
-└── test/                   # Тести
-    ├── setup.ts             # Глобальна ініціалізація (@testing-library/jest-dom)
-    └── integration/
-        ├── LoginForm.test.tsx    # Тест 1: успішний вхід + Zod валідація
-        └── ServerErrors.test.tsx # Тест 2: реакція на 500 та Network Error
+└── test/                   # Інтеграційні та unit-тести
+    ├── setup.ts            # Глобальні налаштування для тестового середовища
+    └── integration/        # Тести, що перевіряють взаємодію компонентів
 ```
 
 ---
