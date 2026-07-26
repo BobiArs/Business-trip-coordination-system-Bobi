@@ -7,6 +7,7 @@ import { useCreateTrip } from "../model/useCreateTrip";
 import { statusApi } from "../../../shared/api/statusApi";
 import { useUI } from "../../../app/providers/UIProvider";
 
+// Схема валідації для форми створення заявки
 const tripSchema = z.object({
   purposeId: z.string().min(1, "Оберіть мету поїздки"),
   description: z.string().min(10, "Опис має містити мінімум 10 символів"),
@@ -19,10 +20,12 @@ const tripSchema = z.object({
 
 type TripFormValues = z.infer<typeof tripSchema>;
 
+// Компонент форми для створення нової заявки
 export default function CreateTripForm() {
   const navigate = useNavigate();
   const { addToast } = useUI();
 
+  // Ініціалізація форми з валідацією
   const {
     register,
     handleSubmit,
@@ -31,16 +34,19 @@ export default function CreateTripForm() {
     resolver: zodResolver(tripSchema),
   });
 
+  // Запит для отримання списку цілей поїздки
   const { data: purposes } = useQuery({
     queryKey: ["trip-purposes"],
     queryFn: statusApi.getPurposes,
   });
 
+  // Запит для отримання рівнів терміновості
   const { data: urgencies } = useQuery({
     queryKey: ["urgency-levels"],
     queryFn: statusApi.getUrgencies,
   });
 
+  // Мутація для створення нової заявки
   const createTrip = useCreateTrip();
   const onSubmit = (data: TripFormValues) => {
     createTrip.mutate(data, {

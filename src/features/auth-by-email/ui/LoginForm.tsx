@@ -11,6 +11,7 @@ interface LoginFormProps {
   onSuccess: () => void;
 }
 
+// Схема валідації для форми входу
 const loginSchema = z.object({
   email: z.string().email("Некоректний email"),
   password: z.string().min(6, "Мінімум 6 символів має бути!"),
@@ -22,6 +23,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
   const { setAuthData } = useAuth();
   const { addToast } = useUI();
 
+  // Ініціалізація форми з валідацією
   const {
     register,
     handleSubmit,
@@ -31,10 +33,12 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     resolver: zodResolver(loginSchema),
   });
 
+  // Встановлюємо фокус на поле email при завантаженні
   useEffect(() => {
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
+  // Мутація для відправки даних на сервер
   const mutation = useMutation({
     mutationFn: async (data: LoginFormValues) => {
       const response = await axiosInstance.post("/auth/login", data);
@@ -56,10 +60,12 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     },
   });
 
+  // Обробник відправки форми
   const onSubmit = (data: LoginFormValues) => {
     mutation.mutate(data);
   };
 
+  // Рендер компонента форми
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="text-center space-y-2 mb-6">

@@ -11,7 +11,7 @@ export default function AppLayout() {
     navigate("/login");
   };
 
-  // Helper to extract initials for avatar
+  // Помічник для вилучення ініціалів для аватара
   const getInitials = (name?: string) => {
     if (!name) return "?";
     return name

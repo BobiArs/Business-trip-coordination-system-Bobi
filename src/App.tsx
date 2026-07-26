@@ -5,6 +5,7 @@ import ToastContainer from "./widgets/ToastContainer";
 import AppRouter from "./app/router";
 import "./index.css";
 
+// Створюємо та налаштовуємо клієнт TanStack Query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -14,6 +15,7 @@ const queryClient = new QueryClient({
   },
 });
 
+// Головний компонент додатку з усіма провайдерами
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>

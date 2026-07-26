@@ -1,3 +1,4 @@
+// Інтерфейс для опису користувача
 export interface User {
   id: string;
   email: string;
@@ -5,6 +6,7 @@ export interface User {
   role: "employee" | "manager";
 }
 
+// Інтерфейс для опису заявки на відрядження
 export interface BusinessTrip {
   id: string;
   purposeId: string; // Мета поїздки (наприклад, зустріч)
@@ -20,6 +22,7 @@ export interface BusinessTrip {
   employeePhone: string; // Контактні дані: Телефон
 }
 
+// Інтерфейс для опису коментаря
 export interface Comment {
   id: string;
   tripId: string;
@@ -28,6 +31,7 @@ export interface Comment {
   createdAt: string;
 }
 
+// Інтерфейс для запису в історії статусів
 export interface StatusHistoryEntry {
   id: string;
   tripId: string;
@@ -37,19 +41,21 @@ export interface StatusHistoryEntry {
   updatedAt: string;
 }
 
-// Статичні довідники
+// Довідник: цілі поїздки
 export const tripPurposes = [
   { id: "client_meeting", name: "Зустріч з клієнтами" },
   { id: "conference", name: "Навчання та конференції" },
   { id: "partner_negotiations", name: "Переговори з партнерами" },
 ];
 
+// Довідник: рівні терміновості
 export const urgencyLevels = [
   { id: "standard", name: "Звичайна" },
   { id: "important", name: "Важлива" },
   { id: "critical", name: "Критична" },
 ];
 
+// Довідник: статуси заявок
 export const businessTripStatuses = [
   { id: "new", name: "Чернетка/Нова" },
   { id: "pending", name: "На розгляді" },
@@ -57,7 +63,7 @@ export const businessTripStatuses = [
   { id: "rejected", name: "Відхилено" },
 ];
 
-// Ініціалізація даних сесії в пам'яті
+// Початкові дані: користувачі
 export let users: User[] = [
   {
     id: "u-1",
@@ -73,6 +79,7 @@ export let users: User[] = [
   },
 ];
 
+// Початкові дані: заявки на відрядження
 export let businessTrips: BusinessTrip[] = [
   {
     id: "trip-1",
@@ -151,6 +158,7 @@ export let businessTrips: BusinessTrip[] = [
   },
 ];
 
+// Початкові дані: коментарі
 export let comments: Comment[] = [
   {
     id: "com-1",
@@ -168,6 +176,7 @@ export let comments: Comment[] = [
   },
 ];
 
+// Початкові дані: історія статусів
 export const statusHistory: StatusHistoryEntry[] = [
   {
     id: "h-1",

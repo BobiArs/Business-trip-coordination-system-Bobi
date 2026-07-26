@@ -8,15 +8,21 @@ import BusinessTripsPage from "../pages/business-trips/BusinessTripsPage";
 import NotFoundPage from "../pages/not-found/NotFoundPage";
 
 // Lazy Loading для сторінки деталей заявки (як вимагає завдання)
-const BusinessTripDetailsPage = lazy(() => import("../pages/trip/BusinessTripDetailsPage"));
-const CreateBusinessTripPage = lazy(() => import("../pages/business-trips/CreateBusinessTripPage"));
+const BusinessTripDetailsPage = lazy(
+  () => import("../pages/trip/BusinessTripDetailsPage"),
+);
+const CreateBusinessTripPage = lazy(
+  () => import("../pages/business-trips/CreateBusinessTripPage"),
+);
 
-// Loading fallback для Suspense
+// Завантаження резервного варіанту для Suspense
 function PageLoader() {
   return (
     <div className="flex flex-col items-center justify-center py-20 space-y-4">
       <div className="w-12 h-12 border-4 border-purple-500/20 border-t-purple-600 rounded-full animate-spin"></div>
-      <p className="text-slate-500 font-medium animate-pulse">Завантаження сторінки...</p>
+      <p className="text-slate-500 font-medium animate-pulse">
+        Завантаження сторінки...
+      </p>
     </div>
   );
 }

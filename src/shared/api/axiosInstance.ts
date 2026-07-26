@@ -1,12 +1,13 @@
 import axios from "axios";
 
+// Створюємо екземпляр Axios для всіх запитів
 export const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Інтерсептор для нашого токена
+// Інтерсептор для додавання токена до кожного запиту
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -16,7 +17,7 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// Інтерсептор для обробки помилок
+// Інтерсептор для обробки помилки 401 (Unauthorized)
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

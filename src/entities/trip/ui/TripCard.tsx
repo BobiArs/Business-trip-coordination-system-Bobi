@@ -20,13 +20,14 @@ export default function TripCard({
   statuses,
   onClick,
 }: TripCardProps) {
+  // Отримуємо назви за ID для довідників
   const purposeName =
     purposes.find((p) => p.id === trip.purposeId)?.name || "-";
   const urgencyName =
     urgencies.find((u) => u.id === trip.urgencyId)?.name || "-";
   const statusName = statuses.find((s) => s.id === trip.statusId)?.name || "-";
 
-  // Dynamic status styling classes
+  // Повертає CSS-клас для бейджа статусу
   const getStatusBadgeClass = (statusId: string) => {
     switch (statusId) {
       case "approved":
@@ -40,7 +41,7 @@ export default function TripCard({
     }
   };
 
-  // Dynamic urgency dot colors
+  // Повертає JSX-елемент індикатора терміновості
   const getUrgencyIndicator = (urgencyId: string) => {
     switch (urgencyId) {
       case "critical":
@@ -57,7 +58,7 @@ export default function TripCard({
     }
   };
 
-  // Dynamic urgency text colors
+  // Повертає CSS-клас для тексту терміновості
   const getUrgencyTextClass = (urgencyId: string) => {
     switch (urgencyId) {
       case "critical":
@@ -69,7 +70,7 @@ export default function TripCard({
     }
   };
 
-  // Shorten description for card previews
+  // Обрізає текст до вказаної довжини
   const truncateText = (text: string, length = 100) => {
     return text.length > length ? text.substring(0, length) + "..." : text;
   };
@@ -84,7 +85,9 @@ export default function TripCard({
           <span className="text-xs font-semibold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/35 px-2.5 py-1 rounded-lg">
             {purposeName}
           </span>
-          <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${getStatusBadgeClass(trip.statusId)}`}>
+          <span
+            className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${getStatusBadgeClass(trip.statusId)}`}
+          >
             {statusName}
           </span>
         </div>
@@ -100,14 +103,18 @@ export default function TripCard({
 
         <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 dark:text-slate-500">Дати поїздки:</span>
+            <span className="text-slate-400 dark:text-slate-500">
+              Дати поїздки:
+            </span>
             <span className="font-semibold text-slate-700 dark:text-slate-300">
               {trip.startDate} — {trip.endDate}
             </span>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 dark:text-slate-500">Терміновість:</span>
+            <span className="text-slate-400 dark:text-slate-500">
+              Терміновість:
+            </span>
             <div className="flex items-center gap-1.5">
               {getUrgencyIndicator(trip.urgencyId)}
               <span className={getUrgencyTextClass(trip.urgencyId)}>

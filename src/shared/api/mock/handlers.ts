@@ -11,7 +11,7 @@ import {
   type BusinessTrip,
 } from "./db";
 
-// Хелпер для валідації токенів
+// Хелпер для перевірки токена та отримання користувача
 const getAuthenticatedUser = (request: Request): User | null => {
   const authHeader = request.headers.get("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
@@ -37,6 +37,7 @@ const checkForForcedErrors = (request: Request) => {
   return null;
 };
 
+// Масив обробників запитів для MSW
 export const handlers = [
   // 1. POST /auth/login — Вхід
   http.post(`/auth/login`, async ({ request }) => {
