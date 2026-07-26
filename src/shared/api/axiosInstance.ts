@@ -10,6 +10,7 @@ export const axiosInstance = axios.create({
 // Інтерсептор для додавання токена до кожного запиту
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,6 +22,7 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Перевіряємо, чи помилка саме 401
     if (error.response?.status === 401) {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("userRole");

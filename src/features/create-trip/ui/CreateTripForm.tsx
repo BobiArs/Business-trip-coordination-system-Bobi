@@ -152,7 +152,7 @@ export default function CreateTripForm() {
             <input
               type="date"
               {...register("startDate")}
-              className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 rounded-xl focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm text-slate-800 dark:text-slate-200 cursor-pointer"
+              className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 rounded-xl focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm text-slate-800 dark:text-slate-200 cursor-pointer dark:[color-scheme:dark]"
             />
             {errors.startDate && (
               <p className="text-rose-500 text-xs font-medium pl-1">
@@ -168,7 +168,7 @@ export default function CreateTripForm() {
             <input
               type="date"
               {...register("endDate")}
-              className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 rounded-xl focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm text-slate-800 dark:text-slate-200 cursor-pointer"
+              className="w-full px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 rounded-xl focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm text-slate-800 dark:text-slate-200 cursor-pointer dark:[color-scheme:dark]"
             />
             {errors.endDate && (
               <p className="text-rose-500 text-xs font-medium pl-1">

@@ -1,6 +1,7 @@
 import { http, HttpResponse, delay } from "msw";
 import {
   users,
+  db,
   businessTrips,
   comments,
   statusHistory,
@@ -175,6 +176,7 @@ export const handlers = [
     };
 
     businessTrips.unshift(newTrip);
+    db.update("businessTrips", businessTrips);
 
     // Перший запис в історію
     statusHistory.push({
@@ -185,6 +187,7 @@ export const handlers = [
       updatedBy: user.name,
       updatedAt: newTrip.createdAt,
     });
+    db.update("statusHistory", statusHistory);
 
     return HttpResponse.json(newTrip, { status: 201 });
   }),
@@ -219,8 +222,10 @@ export const handlers = [
       updatedBy: user.name,
       updatedAt: new Date().toISOString(),
     });
+    db.update("statusHistory", statusHistory);
 
     item.statusId = statusId;
+    db.update("businessTrips", businessTrips);
 
     return HttpResponse.json(item);
   }),
@@ -248,6 +253,7 @@ export const handlers = [
     };
 
     comments.push(newComment);
+    db.update("comments", comments);
 
     return HttpResponse.json(newComment, { status: 201 });
   }),

@@ -64,7 +64,7 @@ export const businessTripStatuses = [
 ];
 
 // Початкові дані: користувачі
-export let users: User[] = [
+const initialUsers: User[] = [
   {
     id: "u-1",
     email: "employee@example.com",
@@ -77,10 +77,28 @@ export let users: User[] = [
     name: "Арсеній Менеджер",
     role: "manager",
   },
+  {
+    id: "u-3",
+    email: "dmytro@example.com",
+    name: "Дмитро Інженер",
+    role: "employee",
+  },
+  {
+    id: "u-4",
+    email: "svetlana@example.com",
+    name: "Світлана Дизайнер",
+    role: "employee",
+  },
+  {
+    id: "u-5",
+    email: "another@example.com",
+    name: "Олена Тестувальник",
+    role: "employee",
+  },
 ];
 
 // Початкові дані: заявки на відрядження
-export let businessTrips: BusinessTrip[] = [
+const initialBusinessTrips: BusinessTrip[] = [
   {
     id: "trip-1",
     purposeId: "client_meeting",
@@ -159,7 +177,7 @@ export let businessTrips: BusinessTrip[] = [
 ];
 
 // Початкові дані: коментарі
-export let comments: Comment[] = [
+const initialComments: Comment[] = [
   {
     id: "com-1",
     tripId: "trip-1",
@@ -177,7 +195,7 @@ export let comments: Comment[] = [
 ];
 
 // Початкові дані: історія статусів
-export const statusHistory: StatusHistoryEntry[] = [
+const initialStatusHistory: StatusHistoryEntry[] = [
   {
     id: "h-1",
     tripId: "trip-1",
@@ -195,3 +213,53 @@ export const statusHistory: StatusHistoryEntry[] = [
     updatedAt: new Date(Date.now() - 3600000 * 24).toISOString(),
   },
 ];
+
+// --- Persistence Layer ---
+
+// Отримує дані з localStorage або використовує початкові дані, якщо в сховищі нічого немає.
+function getFromStorage<T>(key: string, initialData: T): T {
+  try {
+    const item = window.localStorage.getItem(key);
+    if (item) {
+      return JSON.parse(item);
+    }
+  } catch (error) {
+    console.error(`Помилка читання '${key}' з localStorage`, error);
+  }
+  // Якщо в сховищі нічого немає, ініціалізуємо його початковими даними
+  window.localStorage.setItem(key, JSON.stringify(initialData));
+  return initialData;
+}
+
+// Оновлює дані в localStorage.
+function updateStorage<T>(key: string, data: T) {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error(`Помилка запису '${key}' в localStorage`, error);
+  }
+}
+
+// --- Ініціалізація стану "БД" з localStorage ---
+
+export let users: User[] = getFromStorage("db_users", initialUsers);
+export let businessTrips: BusinessTrip[] = getFromStorage(
+  "db_businessTrips",
+  initialBusinessTrips,
+);
+export let comments: Comment[] = getFromStorage("db_comments", initialComments);
+export let statusHistory: StatusHistoryEntry[] = getFromStorage(
+  "db_statusHistory",
+  initialStatusHistory,
+);
+
+// --- Функції для оновлення "БД" ---
+
+export const db = {
+  update: (
+    key: "businessTrips" | "comments" | "statusHistory" | "users",
+    data: any,
+  ) => {
+    updateStorage(`db_${key}`, data);
+  },
+};
